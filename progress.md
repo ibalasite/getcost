@@ -136,3 +136,4 @@ echo '{"last_reported_at":"1970-01-01T00:00:00Z"}' > .getcost/checkpoint.json
 python3 ~/.claude/skills/getcost/bin/getcost-checkpoint.py
 ```
 > ← user runs these; not executed in this repo
+> DONE
