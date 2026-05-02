@@ -32,15 +32,16 @@
 ---
 
 ## Step 4 — Stop hook (`bin/getcost-session-end.py`)
-- [ ] Derive project-hash from `$PWD`: replace `/` with `-`
-- [ ] Find newest `.jsonl` file under `~/.claude/projects/{hash}/`
-- [ ] Call `getcost-calc` logic to get session token totals + cost
-- [ ] Lazily create `{PWD}/.getcost/` and `{PWD}/.getcost/.gitignore` (content: `*`) on first run
-- [ ] Load `{PWD}/.getcost/sessions.json` (create if missing)
-- [ ] Append session record: id, date, model summary, tokens, cost_usd
-- [ ] Recompute and update `project_total` cumulative fields
-- [ ] Write `{PWD}/.getcost/checkpoint.json` with `last_reported_at` reset to epoch
-- [ ] Print session-end summary to stdout
+- [x] Derive project-hash from `$PWD`: replace `/` with `-`
+- [x] Find newest `.jsonl` file under `~/.claude/projects/{hash}/`
+- [x] Call `getcost-calc` logic to get session token totals + cost
+- [x] Lazily create `{PWD}/.getcost/` and `{PWD}/.getcost/.gitignore` (content: `*`) on first run
+- [x] Load `{PWD}/.getcost/sessions.json` (create if missing)
+- [x] Append session record: id, date, model summary, tokens, cost_usd
+- [x] Recompute and update `project_total` cumulative fields
+- [x] Write `{PWD}/.getcost/checkpoint.json` with `last_reported_at` reset to epoch
+- [x] Print session-end summary to stdout
+> DONE
 
 ---
 
