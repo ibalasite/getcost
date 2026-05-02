@@ -74,11 +74,11 @@ Your `.getcost/` data files are preserved. Delete them manually if needed.
   cache_write   12,500 tokens
   cache_read    45,000 tokens
   output        820 tokens
-  費用：$0.21 USD / NT$6.72
+  費用：$0.2100 USD / NT$6.73 TWD
 
 目錄歷史總計（12 sessions）
   總 tokens：2,891,023
-  總費用：$27.41 USD / NT$877.12
+  總費用：$27.4100 USD / NT$878.29 TWD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 匯率：1 USD = 32.05 TWD（cache：2026-05-03）
 ```
@@ -93,16 +93,16 @@ Your `.getcost/` data files are preserved. Delete them manually if needed.
   cache_write   12,500 tokens
   cache_read    45,000 tokens
   output        820 tokens
-  費用：$0.21 USD / NT$6.72
+  費用：$0.2100 USD / NT$6.73 TWD
 
 目錄歷史總計（12 sessions）
   總 tokens：2,891,023
-  總費用：$27.41 USD / NT$877.12
+  總費用：$27.4100 USD / NT$878.29 TWD
 
   ── Session 明細 ──
-  2026-05-01     845,230 tokens  $2.31 USD / NT$74.03
-  2026-05-02   1,203,450 tokens  $3.18 USD / NT$101.96
-  2026-05-03     842,343 tokens  $2.27 USD / NT$72.75
+  2026-05-01     845,230 tokens  $2.3100 USD / NT$74.04 TWD
+  2026-05-02   1,203,450 tokens  $3.1800 USD / NT$101.92 TWD
+  2026-05-03     842,343 tokens  $2.2700 USD / NT$72.78 TWD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 匯率：1 USD = 32.05 TWD（cache：2026-05-03）
 ```
@@ -113,8 +113,8 @@ Fires when Claude Code session closes:
 
 ```
 [getcost] Session 結束 ──────────────────────────
-  本次：61,521 tokens → $0.21 USD / NT$6.72
-  目錄累積（12 sessions）：2,891,023 tokens → $27.41 USD / NT$877.12
+  本次：61,521 tokens → $0.2100 USD / NT$6.73 TWD
+  目錄累積（12 sessions）：2,891,023 tokens → $27.4100 USD / NT$878.29 TWD
 ─────────────────────────────────────────────
 ```
 
@@ -123,7 +123,7 @@ Fires when Claude Code session closes:
 Fires every 5 minutes during active work:
 
 ```
-[getcost] ⏱ 5min checkpoint — 本 session 累積：12,450 tokens → $0.04 USD / NT$1.28
+[getcost] ⏱ 5min checkpoint — 本 session 累積：12,450 tokens → $0.0420 USD / NT$1.35 TWD
 ```
 
 ---
