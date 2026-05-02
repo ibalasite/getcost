@@ -10,7 +10,14 @@
 
 ---
 
-## Step 2 — Core calculation library (`bin/getcost-calc.py`)
+## Step 2 — Repository structure
+- [x] Create `skills/` directory
+- [x] Create `skills/getcost-upgrade/` placeholder (skill written in Step 8)
+- [ ] Update CLAUDE.md to reflect final repo layout
+
+---
+
+## Step 3 — Core calculation library (`bin/getcost-calc.py`)
 - [ ] Parse JSONL: iterate lines, extract entries that contain a `usage` object
 - [ ] Sum tokens per session: input, cache_creation_input, cache_read_input, output
 - [ ] Handle multi-model sessions: each JSONL line has its own `model` field, apply per-line pricing
@@ -23,7 +30,7 @@
 
 ---
 
-## Step 3 — Stop hook (`bin/getcost-session-end.py`)
+## Step 4 — Stop hook (`bin/getcost-session-end.py`)
 - [ ] Derive project-hash from `$PWD`: replace `/` with `-`
 - [ ] Find newest `.jsonl` file under `~/.claude/projects/{hash}/`
 - [ ] Call `getcost-calc` logic to get session token totals + cost
@@ -31,12 +38,12 @@
 - [ ] Load `{PWD}/.getcost/sessions.json` (create if missing)
 - [ ] Append session record: id, date, model summary, tokens, cost_usd
 - [ ] Recompute and update `project_total` cumulative fields
-- [ ] Write `{PWD}/.getcost/checkpoint.json` with `last_reported_at` reset to epoch (so next session starts fresh)
+- [ ] Write `{PWD}/.getcost/checkpoint.json` with `last_reported_at` reset to epoch
 - [ ] Print session-end summary to stdout
 
 ---
 
-## Step 4 — PostToolUse checkpoint hook (`bin/getcost-checkpoint.py`)
+## Step 5 — PostToolUse checkpoint hook (`bin/getcost-checkpoint.py`)
 - [ ] Derive project-hash from `$PWD`
 - [ ] Find newest `.jsonl` in `~/.claude/projects/{hash}/`
 - [ ] Lazily create `{PWD}/.getcost/` and `{PWD}/.getcost/.gitignore` (content: `*`) on first run
@@ -48,7 +55,7 @@
 
 ---
 
-## Step 5 — Hook registration manager (`bin/getcost-settings-hook.py`)
+## Step 6 — Hook registration manager (`bin/getcost-settings-hook.py`)
 - [ ] `add-stop` subcommand: inject Stop hook entry into `~/.claude/settings.json`
 - [ ] `add-posttooluse` subcommand: inject PostToolUse hook entry into settings.json
 - [ ] `remove` subcommand: remove both hooks by marker string
@@ -58,7 +65,7 @@
 
 ---
 
-## Step 6 — `/getcost` skill (`skill.md`)
+## Step 7 — `/getcost` skill (`skill.md`)
 - [ ] Skill frontmatter: name, description, trigger patterns, allowed-tools
 - [ ] Invoke `bin/getcost-calc.py --report` via Bash tool to gather current session + totals
 - [ ] Display formatted report: current session token breakdown + directory total
@@ -68,21 +75,37 @@
 
 ---
 
-## Step 7 — `setup` script
+## Step 8 — `/getcost-upgrade` skill (`skills/getcost-upgrade/skill.md`)
+- [ ] Skill frontmatter: name, description, allowed-tools
+- [ ] `git pull` in `~/.claude/skills/getcost/`
+- [ ] Redeploy sub-skills: copy `~/.claude/skills/getcost/skills/*` → `~/.claude/skills/`
+- [ ] Print upgrade summary: old version → new version (git log --oneline -1)
+
+---
+
+## Step 9 — `setup` script
 - [ ] Prereq check: git, python3, curl; exit with clear message if missing
 - [ ] `install` action:
-  - Clone repo to `~/.claude/skills/getcost/` (or pull if already exists)
+  - Clone repo to `~/.claude/skills/getcost/`
+  - Deploy sub-skills: copy `~/.claude/skills/getcost/skills/*` → `~/.claude/skills/`
   - Run `bin/getcost-settings-hook.py add-stop`
   - Run `bin/getcost-settings-hook.py add-posttooluse`
   - Init `~/.getcost/config.json` with defaults if not present
   - Fetch exchange rates on first install
   - Print: "Restart Claude Code to activate hooks"
-- [ ] `update` action: git pull in `~/.claude/skills/getcost/` → redeploy `skill.md`
-- [ ] `uninstall` action: remove hooks via settings-hook.py → remove `~/.claude/skills/getcost.md`; leave `.getcost/` data intact
+- [ ] `update` action:
+  - `git pull` in `~/.claude/skills/getcost/`
+  - Redeploy sub-skills: copy `~/.claude/skills/getcost/skills/*` → `~/.claude/skills/`
+  - Print update summary
+- [ ] `uninstall` action:
+  - Remove hooks via `bin/getcost-settings-hook.py remove`
+  - Remove deployed sub-skills from `~/.claude/skills/` (only those sourced from `skills/*`)
+  - Remove `~/.claude/skills/getcost/`
+  - Leave `~/.getcost/` and all `.getcost/` project data intact
 
 ---
 
-## Step 8 — Verify commands (user runs after install)
+## Step 10 — Verify commands (user runs after install)
 
 This repo does not run setup or modify the local environment.
 After installing, the user verifies with:
