@@ -7,7 +7,7 @@ CLI modes:
   python3 getcost-calc.py --session <file>   # parse one JSONL, print summary
   python3 getcost-calc.py --report           # full report for current directory
 """
-import argparse, json, os, sys, urllib.request
+import argparse, json, os, subprocess, sys, urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from collections import defaultdict
@@ -35,6 +35,39 @@ LOCALE_CURRENCY = [
     ("pt",    "EUR",  "€"),
     ("en",    "USD",  "$"),
 ]
+
+COUNTRY_CURRENCY = {
+    "TW": ("TWD", "NT$"),
+    "HK": ("HKD", "HK$"),
+    "JP": ("JPY",  "¥"),
+    "KR": ("KRW",  "₩"),
+    "CN": ("CNY",  "¥"),
+    "SG": ("SGD", "S$"),
+    "DE": ("EUR",  "€"),
+    "FR": ("EUR",  "€"),
+    "ES": ("EUR",  "€"),
+    "IT": ("EUR",  "€"),
+    "PT": ("EUR",  "€"),
+    "NL": ("EUR",  "€"),
+    "GB": ("GBP",  "£"),
+    "AU": ("AUD", "A$"),
+    "CA": ("CAD", "CA$"),
+    "IN": ("INR",  "₹"),
+}
+
+def _macos_country() -> str:
+    """Extract 2-letter country code from macOS AppleLocale (e.g. en_TW → TW)."""
+    try:
+        r = subprocess.run(
+            ["defaults", "read", "NSGlobalDomain", "AppleLocale"],
+            capture_output=True, text=True, timeout=2,
+        )
+        locale = r.stdout.strip()  # e.g. "en_TW"
+        if "_" in locale:
+            return locale.split("_")[-1].upper()
+    except Exception:
+        pass
+    return ""
 
 CONFIG_PATH = Path.home() / ".getcost" / "config.json"
 PROJECTS_DIR = Path.home() / ".claude" / "projects"
@@ -110,6 +143,10 @@ def detect_currency(config: dict) -> tuple[str, str, float]:
                     break
             if preferred:
                 break
+    if not preferred:
+        country = _macos_country()
+        if country in COUNTRY_CURRENCY:
+            preferred = COUNTRY_CURRENCY[country][0]
 
     if not preferred or preferred == "USD":
         return "USD", "$", 1.0
