@@ -18,15 +18,16 @@
 ---
 
 ## Step 3 — Core calculation library (`bin/getcost-calc.py`)
-- [ ] Parse JSONL: iterate lines, extract entries that contain a `usage` object
-- [ ] Sum tokens per session: input, cache_creation_input, cache_read_input, output
-- [ ] Handle multi-model sessions: each JSONL line has its own `model` field, apply per-line pricing
-- [ ] Built-in pricing table: opus-4-7, sonnet-4-6, haiku-4-5, unknown fallback
-- [ ] USD cost calculation from token counts
-- [ ] Locale detection: check `LC_MONETARY` → `LANG` → default USD
-- [ ] Exchange rate: load from `~/.getcost/config.json`; if absent or stale (>24h), fetch from `open.er-api.com` and save
-- [ ] Format output string: `$0.42 USD / NT$13.44 TWD`
-- [ ] CLI entry point: `python3 getcost-calc.py --session <file>` prints result (for user verification)
+- [x] Parse JSONL: iterate lines, extract entries that contain a `usage` object
+- [x] Sum tokens per session: input, cache_creation_input, cache_read_input, output
+- [x] Handle multi-model sessions: each JSONL line has its own `model` field, apply per-line pricing
+- [x] Built-in pricing table: opus-4-7, sonnet-4-6, haiku-4-5, unknown fallback
+- [x] USD cost calculation from token counts
+- [x] Locale detection: check `LC_MONETARY` → `LANG` → default USD
+- [x] Exchange rate: load from `~/.getcost/config.json`; if absent or stale (>24h), fetch from `open.er-api.com` and save
+- [x] Format output string: `$0.42 USD / NT$13.44 TWD`
+- [x] CLI entry point: `python3 getcost-calc.py --session <file>` prints result (for user verification)
+> DONE
 
 ---
 
