@@ -26,19 +26,14 @@ Automatically calculates spending at session end, shows periodic checkpoints dur
 ## Install
 
 ```bash
-git clone https://github.com/your-org/getcost.git
+git clone https://github.com/ibalasite/getcost.git
 cd getcost
 ./setup install
 ```
 
 Restart Claude Code after install to activate hooks.
 
-To install into a specific project directory, navigate there first:
-
-```bash
-cd /path/to/your/project
-~/.claude/skills/getcost/setup install
-```
+The hooks apply globally — once installed, every project you open in Claude Code will automatically track costs. Data is stored per-project under `.getcost/` (created automatically on first use).
 
 ---
 
