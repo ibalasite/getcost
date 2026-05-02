@@ -27,6 +27,7 @@
 - [ ] Derive project-hash from `$PWD`: replace `/` with `-`
 - [ ] Find newest `.jsonl` file under `~/.claude/projects/{hash}/`
 - [ ] Call `getcost-calc` logic to get session token totals + cost
+- [ ] Lazily create `{PWD}/.getcost/` and `{PWD}/.getcost/.gitignore` (content: `*`) on first run
 - [ ] Load `{PWD}/.getcost/sessions.json` (create if missing)
 - [ ] Append session record: id, date, model summary, tokens, cost_usd
 - [ ] Recompute and update `project_total` cumulative fields
@@ -38,6 +39,7 @@
 ## Step 4 — PostToolUse checkpoint hook (`bin/getcost-checkpoint.py`)
 - [ ] Derive project-hash from `$PWD`
 - [ ] Find newest `.jsonl` in `~/.claude/projects/{hash}/`
+- [ ] Lazily create `{PWD}/.getcost/` and `{PWD}/.getcost/.gitignore` (content: `*`) on first run
 - [ ] Read `{PWD}/.getcost/checkpoint.json` → `last_reported_at` (treat missing as epoch)
 - [ ] Compute elapsed minutes
 - [ ] If elapsed < interval → exit 0 silently
@@ -70,12 +72,10 @@
 - [ ] Prereq check: git, python3, curl; exit with clear message if missing
 - [ ] `install` action:
   - Clone repo to `~/.claude/skills/getcost/` (or pull if already exists)
-  - Copy `skill.md` to `~/.claude/skills/getcost.md`
   - Run `bin/getcost-settings-hook.py add-stop`
   - Run `bin/getcost-settings-hook.py add-posttooluse`
   - Init `~/.getcost/config.json` with defaults if not present
   - Fetch exchange rates on first install
-  - Create `{PWD}/.getcost/` + `{PWD}/.getcost/.gitignore` (content: `*`)
   - Print: "Restart Claude Code to activate hooks"
 - [ ] `update` action: git pull in `~/.claude/skills/getcost/` → redeploy `skill.md`
 - [ ] `uninstall` action: remove hooks via settings-hook.py → remove `~/.claude/skills/getcost.md`; leave `.getcost/` data intact
