@@ -70,20 +70,22 @@
 ---
 
 ## Step 7 — `/getcost` skill (`skill.md`)
-- [ ] Skill frontmatter: name, description, trigger patterns, allowed-tools
-- [ ] Invoke `bin/getcost-calc.py --report` via Bash tool to gather current session + totals
-- [ ] Display formatted report: current session token breakdown + directory total
-- [ ] Show exchange rate with cache date
-- [ ] Handle `all` argument: show per-session detail list from sessions.json
-- [ ] Handle missing `.getcost/` gracefully: print first-run hint
+- [x] Skill frontmatter: name, description, trigger patterns, allowed-tools
+- [x] Invoke `bin/getcost-calc.py --report` via Bash tool to gather current session + totals
+- [x] Display formatted report: current session token breakdown + directory total
+- [x] Show exchange rate with cache date
+- [x] Handle `all` argument: show per-session detail list from sessions.json
+- [x] Handle missing `.getcost/` gracefully: print first-run hint
+> DONE
 
 ---
 
 ## Step 8 — `/getcost-upgrade` skill (`skills/getcost-upgrade/skill.md`)
-- [ ] Skill frontmatter: name, description, allowed-tools
-- [ ] `git pull` in `~/.claude/skills/getcost/`
-- [ ] Redeploy sub-skills: copy `~/.claude/skills/getcost/skills/*` → `~/.claude/skills/`
-- [ ] Print upgrade summary: old version → new version (git log --oneline -1)
+- [x] Skill frontmatter: name, description, allowed-tools
+- [x] `git pull` in `~/.claude/skills/getcost/`
+- [x] Redeploy sub-skills: copy `~/.claude/skills/getcost/skills/*` → `~/.claude/skills/`
+- [x] Print upgrade summary: old version → new version (git log --oneline -1)
+> DONE
 
 ---
 
