@@ -64,23 +64,66 @@ Your `.getcost/` data files are preserved. Delete them manually if needed.
 /getcost all      # same, plus per-session breakdown
 ```
 
-### Example output
+### `/getcost` — session summary
 
 ```
 [getcost] /Users/you/projects/myapp
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 本 session（進行中）
-  input        3,201 tokens
-  cache_write  12,500 tokens
-  cache_read   45,000 tokens
-  output          820 tokens
+  input         3,201 tokens
+  cache_write   12,500 tokens
+  cache_read    45,000 tokens
+  output        820 tokens
   費用：$0.21 USD / NT$6.72
 
 目錄歷史總計（12 sessions）
   總 tokens：2,891,023
   總費用：$27.41 USD / NT$877.12
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 匯率：1 USD = 32.05 TWD（cache：2026-05-03）
+```
+
+### `/getcost all` — with per-session breakdown
+
+```
+[getcost] /Users/you/projects/myapp
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+本 session（進行中）
+  input         3,201 tokens
+  cache_write   12,500 tokens
+  cache_read    45,000 tokens
+  output        820 tokens
+  費用：$0.21 USD / NT$6.72
+
+目錄歷史總計（12 sessions）
+  總 tokens：2,891,023
+  總費用：$27.41 USD / NT$877.12
+
+  ── Session 明細 ──
+  2026-05-01     845,230 tokens  $2.31 USD / NT$74.03
+  2026-05-02   1,203,450 tokens  $3.18 USD / NT$101.96
+  2026-05-03     842,343 tokens  $2.27 USD / NT$72.75
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+匯率：1 USD = 32.05 TWD（cache：2026-05-03）
+```
+
+### Session-end hook (automatic)
+
+Fires when Claude Code session closes:
+
+```
+[getcost] Session 結束 ──────────────────────────
+  本次：61,521 tokens → $0.21 USD / NT$6.72
+  目錄累積（12 sessions）：2,891,023 tokens → $27.41 USD / NT$877.12
+─────────────────────────────────────────────
+```
+
+### 5-minute checkpoint (automatic)
+
+Fires every 5 minutes during active work:
+
+```
+[getcost] ⏱ 5min checkpoint — 本 session 累積：12,450 tokens → $0.04 USD / NT$1.28
 ```
 
 ---
