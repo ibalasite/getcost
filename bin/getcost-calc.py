@@ -230,9 +230,9 @@ def fmt_tokens(n: int) -> str:
 # ── Project helpers ────────────────────────────────────────────────────────────
 
 def get_project_hash(cwd: str = None) -> str:
-    """Convert /Users/foo/bar → -Users-foo-bar"""
+    """Convert /Users/foo/bar_baz → -Users-foo-bar-baz (mirrors Claude Code's hash)"""
     path = os.path.abspath(cwd or os.getcwd())
-    return path.replace("/", "-")
+    return path.replace("/", "-").replace("_", "-")
 
 def find_newest_jsonl(project_hash: str) -> Path | None:
     hash_dir = PROJECTS_DIR / project_hash
