@@ -46,24 +46,26 @@
 ---
 
 ## Step 5 — PostToolUse checkpoint hook (`bin/getcost-checkpoint.py`)
-- [ ] Derive project-hash from `$PWD`
-- [ ] Find newest `.jsonl` in `~/.claude/projects/{hash}/`
-- [ ] Lazily create `{PWD}/.getcost/` and `{PWD}/.getcost/.gitignore` (content: `*`) on first run
-- [ ] Read `{PWD}/.getcost/checkpoint.json` → `last_reported_at` (treat missing as epoch)
-- [ ] Compute elapsed minutes
-- [ ] If elapsed < interval → exit 0 silently
-- [ ] If elapsed ≥ interval: calc current session token totals + cost, print one-liner, update `last_reported_at`
-- [ ] Read interval from `~/.getcost/config.json` `checkpoint_interval_minutes` (default: 5)
+- [x] Derive project-hash from `$PWD`
+- [x] Find newest `.jsonl` in `~/.claude/projects/{hash}/`
+- [x] Lazily create `{PWD}/.getcost/` and `{PWD}/.getcost/.gitignore` (content: `*`) on first run
+- [x] Read `{PWD}/.getcost/checkpoint.json` → `last_reported_at` (treat missing as epoch)
+- [x] Compute elapsed minutes
+- [x] If elapsed < interval → exit 0 silently
+- [x] If elapsed ≥ interval: calc current session token totals + cost, print one-liner, update `last_reported_at`
+- [x] Read interval from `~/.getcost/config.json` `checkpoint_interval_minutes` (default: 5)
+> DONE
 
 ---
 
 ## Step 6 — Hook registration manager (`bin/getcost-settings-hook.py`)
-- [ ] `add-stop` subcommand: inject Stop hook entry into `~/.claude/settings.json`
-- [ ] `add-posttooluse` subcommand: inject PostToolUse hook entry into settings.json
-- [ ] `remove` subcommand: remove both hooks by marker string
-- [ ] Dedup guard: skip silently if identical hook already present
-- [ ] Atomic write: tempfile + `os.replace` to avoid settings.json corruption
-- [ ] Create `~/.claude/settings.json` with empty skeleton if file does not exist
+- [x] `add-stop` subcommand: inject Stop hook entry into `~/.claude/settings.json`
+- [x] `add-posttooluse` subcommand: inject PostToolUse hook entry into settings.json
+- [x] `remove` subcommand: remove both hooks by marker string
+- [x] Dedup guard: skip silently if identical hook already present
+- [x] Atomic write: tempfile + `os.replace` to avoid settings.json corruption
+- [x] Create `~/.claude/settings.json` with empty skeleton if file does not exist
+> DONE
 
 ---
 
