@@ -90,8 +90,8 @@
 ---
 
 ## Step 9 — `setup` script
-- [ ] Prereq check: git, python3, curl; exit with clear message if missing
-- [ ] `install` action:
+- [x] Prereq check: git, python3, curl; exit with clear message if missing
+- [x] `install` action:
   - Clone repo to `~/.claude/skills/getcost/`
   - Deploy sub-skills: copy `~/.claude/skills/getcost/skills/*` → `~/.claude/skills/`
   - Run `bin/getcost-settings-hook.py add-stop`
@@ -99,15 +99,16 @@
   - Init `~/.getcost/config.json` with defaults if not present
   - Fetch exchange rates on first install
   - Print: "Restart Claude Code to activate hooks"
-- [ ] `update` action:
+- [x] `update` action:
   - `git pull` in `~/.claude/skills/getcost/`
   - Redeploy sub-skills: copy `~/.claude/skills/getcost/skills/*` → `~/.claude/skills/`
   - Print update summary
-- [ ] `uninstall` action:
+- [x] `uninstall` action:
   - Remove hooks via `bin/getcost-settings-hook.py remove`
   - Remove deployed sub-skills from `~/.claude/skills/` (only those sourced from `skills/*`)
   - Remove `~/.claude/skills/getcost/`
   - Leave `~/.getcost/` and all `.getcost/` project data intact
+> DONE
 
 ---
 

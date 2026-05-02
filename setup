@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+# getcost setup — install / update / uninstall
+# Usage:
+#   ./setup             # install (default)
+#   ./setup install
+#   ./setup update
+#   ./setup uninstall
+
+set -e
+
+REPO_URL="https://github.com/ibalasite/getcost.git"
+RUNTIME_DIR="$HOME/.claude/skills/getcost"
+SKILLS_SRC="$RUNTIME_DIR/skills"
+CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
+SETTINGS_HOOK="$RUNTIME_DIR/bin/getcost-settings-hook.py"
+
+CMD="${1:-install}"
+
+log()  { echo "[getcost] $*"; }
+die()  { echo "[getcost] ERROR: $*" >&2; exit 1; }
+
+check_deps() {
+  local missing=()
+  command -v git     >/dev/null 2>&1 || missing+=("git")
+  command -v python3 >/dev/null 2>&1 || missing+=("python3")
+  command -v curl    >/dev/null 2>&1 || missing+=("curl")
+  [[ ${#missing[@]} -eq 0 ]] || die "Missing dependencies: ${missing[*]}"
+}
+
+deploy_skills() {
+  [[ -d "$SKILLS_SRC" ]] || return
+  for skill_dir in "$SKILLS_SRC"/*/; do
+    [[ -d "$skill_dir" ]] || continue
+    name="$(basename "$skill_dir")"
+    rm -rf "$CLAUDE_SKILLS_DIR/$name"
+    cp -r  "$skill_dir" "$CLAUDE_SKILLS_DIR/$name"
+    log "  · deployed ~/.claude/skills/$name"
+  done
+}
+
+remove_skills() {
+  [[ -d "$SKILLS_SRC" ]] || return
+  for skill_dir in "$SKILLS_SRC"/*/; do
+    [[ -d "$skill_dir" ]] || continue
+    name="$(basename "$skill_dir")"
+    if [[ -d "$CLAUDE_SKILLS_DIR/$name" ]]; then
+      rm -rf "$CLAUDE_SKILLS_DIR/$name"
+      log "  · removed ~/.claude/skills/$name"
+    fi
+  done
+}
+
+do_install() {
+  check_deps
+
+  if [[ -d "$RUNTIME_DIR/.git" ]]; then
+    log "$RUNTIME_DIR already exists — running update instead"
+    do_update
+    return
+  fi
+
+  log "Cloning getcost → $RUNTIME_DIR"
+  git clone "$REPO_URL" "$RUNTIME_DIR"
+
+  deploy_skills
+
+  log "Registering hooks..."
+  python3 "$SETTINGS_HOOK" add-stop
+  python3 "$SETTINGS_HOOK" add-posttooluse
+
+  log "Initialising config..."
+  python3 "$SETTINGS_HOOK" init-config
+
+  log "Fetching exchange rates..."
+  python3 "$RUNTIME_DIR/bin/getcost-calc.py" --report --cwd "$HOME" >/dev/null 2>&1 || true
+
+  log ""
+  log "✓ Install complete. Restart Claude Code to activate hooks."
+  log "  · Usage    : /getcost"
+  log "  · Upgrade  : /getcost-upgrade  (or ./setup update)"
+  log "  · Remove   : ./setup uninstall"
+}
+
+do_update() {
+  check_deps
+  [[ -d "$RUNTIME_DIR/.git" ]] || die "$RUNTIME_DIR not found. Run: ./setup install"
+
+  log "Pulling latest..."
+  git -C "$RUNTIME_DIR" pull --ff-only
+
+  deploy_skills
+
+  log "✓ Update complete."
+}
+
+do_uninstall() {
+  log "Removing hooks..."
+  if [[ -f "$SETTINGS_HOOK" ]]; then
+    python3 "$SETTINGS_HOOK" remove
+  fi
+
+  remove_skills
+
+  if [[ -d "$RUNTIME_DIR" ]]; then
+    rm -rf "$RUNTIME_DIR"
+    log "Removed $RUNTIME_DIR"
+  fi
+
+  log ""
+  log "✓ Uninstall complete."
+  log "  Project data (.getcost/ directories) were NOT deleted."
+  log "  Remove them manually if needed: find ~ -name .getcost -type d"
+}
+
+case "$CMD" in
+  install)   do_install   ;;
+  update)    do_update    ;;
+  uninstall) do_uninstall ;;
+  *) die "Unknown command: $CMD. Use: install | update | uninstall" ;;
+esac
