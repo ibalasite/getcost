@@ -69,6 +69,26 @@ def _macos_country() -> str:
         pass
     return ""
 
+def _windows_country() -> str:
+    """Extract 2-letter country code from Windows registry (e.g. zh-TW → TW)."""
+    try:
+        import winreg
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Control Panel\International")
+        locale_name, _ = winreg.QueryValueEx(key, "sLocaleName")  # e.g. "zh-TW"
+        winreg.CloseKey(key)
+        if "-" in locale_name:
+            return locale_name.split("-")[-1].upper()
+    except Exception:
+        pass
+    return ""
+
+def _detect_country() -> str:
+    if sys.platform == "darwin":
+        return _macos_country()
+    if sys.platform == "win32":
+        return _windows_country()
+    return ""
+
 CONFIG_PATH = Path.home() / ".getcost" / "config.json"
 PROJECTS_DIR = Path.home() / ".claude" / "projects"
 RATE_TTL_HOURS = 24
@@ -144,7 +164,7 @@ def detect_currency(config: dict) -> tuple[str, str, float]:
             if preferred:
                 break
     if not preferred:
-        country = _macos_country()
+        country = _detect_country()
         if country in COUNTRY_CURRENCY:
             preferred = COUNTRY_CURRENCY[country][0]
 
